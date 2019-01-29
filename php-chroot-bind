@@ -1,19 +1,6 @@
-#!/bin/bash
-_CHROOTS_CMD="ls -1d /home/www/*/chroot"
-_SYSTEMD_UNIT_DIR="/etc/systemd/system"
-_BIND="\
-	/usr/share/zoneinfo \
-	/dev/urandom \
-	/dev/zero \
-	/dev/null \
-	/etc/resolv.conf \
-	/lib/x86_64-linux-gnu/libnss_dns.so.2 \
-	/usr/share/ca-certificates \
-	/etc/ssl/certs"
+#!/usr/bin/env bash
 
-# File with additional binds for specific chroots. Relative to the chroot.
-_BIND_LOCAL="../bind.conf"
-
+source /etc/php-chroot-bind.conf
 
 is_bound() {
 	mount | grep " on $1 type " > /dev/null && return 0 || return 1
@@ -195,7 +182,7 @@ Usage: $0 <command> [<subcommand> [-do]]
 		Show if pathes defined in \$_BIND are mounted (green)
 		or not (red)
 
-	bind: 
+	bind:
 
 		Bind any path defined in \$_BIND to any chroot
 		given by \$_CHROOTS_CMD if it is not bound already.
@@ -254,7 +241,7 @@ EOF
 $_CHROOTS_CMD | while read chroot; do
 	echo "Chroot: $chroot"
 	for bind in `get_binds "${chroot}"`; do
-		
+
 		mountpoint="${chroot}${bind}"
 
 		# List binds
