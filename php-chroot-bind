@@ -267,3 +267,5 @@ $_CHROOTS_CMD | while read chroot; do
 	# Clean up directories and files created as mountpoint
 	[ "$_OPT_ACTION" = "unbind" ] && $_OPT_CLEAN && for bind in `get_binds "${chroot}"`; do delete_path "${chroot}" "${bind}"; done;
 done;
+
+exit 0;
